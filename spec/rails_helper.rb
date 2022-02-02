@@ -62,6 +62,7 @@ RSpec.configure do |config|
       with.test_framework :rspec
       with.library :rails
     end
+  end
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
