@@ -14,10 +14,9 @@ RSpec.describe "Users", type: :request do
        }
        }
      end
-     before do
-       post "/api/user/signup", params: valid_params
-     end
-     it 'creates a new user' do
+
+     it 'increases the number of created user by 1' do
+       expect { post "/api/user/signup", params: valid_params }.to change{User.count}.by(1)
        expect(response).to have_http_status :created
      end
    end
