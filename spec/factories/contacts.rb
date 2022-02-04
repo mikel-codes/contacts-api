@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :contact do
     user { create(:user) }
     name { Faker::Name.name }
-    phone { '909239333' }
+    phone { Faker::PhoneNumber.phone_number }
     description { "Example: Yea mu description" }
   end
 end
