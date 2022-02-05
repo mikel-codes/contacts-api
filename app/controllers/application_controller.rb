@@ -12,7 +12,7 @@ class ApplicationController < ActionController::API
       #will return nil if an excecption occurs
       unless jwt_payload.nil?
         current_user_id = jwt_payload["user_id"]
-        current_user = User.find_by(id: current_user_id)
+        @current_user = User.find_by(id: current_user_id)
       else
         #forbid the request if nil
         head :unauthorized
@@ -21,8 +21,8 @@ class ApplicationController < ActionController::API
   end
 
   def set_current_user
-    if current_user
-      current_user
+    if @current_user
+      @current_user
     else
       nil
     end
