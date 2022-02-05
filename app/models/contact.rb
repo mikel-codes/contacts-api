@@ -1,6 +1,6 @@
 class Contact < ApplicationRecord
   #the ORM maps the user to owner so api calls can be cloaked with owner instead
-  has_many :ratings
+  has_many :ratings,  :dependent => :destroy
   belongs_to :owner, class_name: "User", foreign_key: :user_id
 
   validates :phone, :name, presence: true
