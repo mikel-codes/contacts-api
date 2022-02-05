@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'byebug'
 RSpec.describe "Api::Contacts Endpoints", type: :request do
-  describe "index" do
+  describe   do
     let(:user) { create(:user) }
     let(:headers) { {"Authorization": "JWT #{JsonWebToken.encode(user_id: user.id)}"}}
     let!(:contacts) do
@@ -10,37 +10,42 @@ RSpec.describe "Api::Contacts Endpoints", type: :request do
         contact.save!
       end
     end
+    describe "index" do
+      describe "GET /index" do
+        context "with valid authorization headers" do
+          it "returns http success" do
+            get "/api/contacts", params: {}, headers: headers
+            res = JSON.parse(response.body)
+            expect(response).to have_http_status(:success)
+            expect(Contact.count).to eql 10
+          end
+        end
+      end
 
-    describe "GET /index" do
-      context "with valid authorization headers" do
-        it "returns http success" do
-          get "/api/contacts", params: {}, headers: headers
-          res = JSON.parse(response.body)
-          expect(response).to have_http_status(:success)
-          expect(Contact.count).to eql 10
+      describe "GET /index" do
+        context "with invalid authorization headers" do
+          it "returns a nil user and raises a 404" do
+            get "/api/contacts", params: {}, headers: {"Authorization": "JWT bdJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE2NDkyMDU2Njl9.rlmaazxz26HV7a1dqHqbfJaiwCXCLM"}
+            expect(response).to have_http_status(:unauthorized)
+            expect(response.body).to be_empty
+          end
         end
       end
     end
 
-    describe "GET /index" do
-      context "with invalid authorization headers" do
-        it "returns a nil user and raises a 404" do
-          get "/api/contacts", params: {}, headers: {"Authorization": "JWT bdJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1LCJleHAiOjE2NDkyMDU2Njl9.rlmaazxz26HV7a1dqHqbfJaiwCXCLM"}
-          expect(response).to have_http_status(:unauthorized)
-          expect(response.body).to be_empty
+    describe "show" do
+      describe "GET /show" do
+        context "with valid headers" do
+          it "returns http success" do
+            get "/api/contacts/#{Contact.first.id}", params: {}, headers: headers
+            expect(response).to have_http_status(:success)
+          end
         end
       end
     end
   end
-
+end
 =begin
-  describe "GET /show" do
-    it "returns http success" do
-      get "/api/contacts/show"
-      expect(response).to have_http_status(:success)
-    end
-  end
-
   describe "GET /update" do
     it "returns http success" do
       get "/api/contacts/update"
@@ -69,5 +74,3 @@ RSpec.describe "Api::Contacts Endpoints", type: :request do
     end
   end
 =end
-
-end
