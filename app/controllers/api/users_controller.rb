@@ -1,4 +1,3 @@
-require 'byebug'
 class Api::UsersController < ApplicationController
   skip_before_action :authorize_user, only: [:signin, :create]
 
@@ -18,7 +17,7 @@ class Api::UsersController < ApplicationController
     user = User.find_by(email: login_params[:email])
     #if found authenticate the user with the password
     if user && user.authenticate(login_params[:password])
-      auth_token = JsonWebToken.encode({user_id: user.id})
+      auth_token = JsonWebToken.encode(user_id: user.id)
       render json: {message: "logged in successfully", token: auth_token, user: user}, status: :ok
     else
       render json: {message: "Invalid credentials"}, status: :bad_request
