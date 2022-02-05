@@ -20,7 +20,8 @@ class Api::ContactsController < ApplicationController
   end
 
   def destroy
-
+    @contact.destroy
+    head :no_content
   end
 
   def create

@@ -89,8 +89,21 @@ RSpec.describe "Api::Contacts Endpoints", type: :request do
         end
       end
     end
+
+    describe "Destroy" do
+      context "will remove a single item" do
+       it 'and returns status code 204' do
+        expect {delete "/api/contacts/#{contacts.first.id}", params: {}, headers: headers }.to change{ Contact.count}.by(-1)
+        expect(response).to have_http_status(204)
+        expect(Contact.count).to eql(9)
+       end
+     end
+    end
   end
 end
+
+
+
 
 
 =begin
