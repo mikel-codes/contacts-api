@@ -1,6 +1,6 @@
 class Api::ContactsController < ApplicationController
   before_action :set_current_user
-  before_action :set_contact, only: ["show", "update"]
+  before_action :set_contact, only: ["show", "update", "destroy"]
 
   def index
     contacts = Contact.where(owner: @current_user)
@@ -15,6 +15,7 @@ class Api::ContactsController < ApplicationController
   end
 
   def destroy
+
   end
 
   def create
