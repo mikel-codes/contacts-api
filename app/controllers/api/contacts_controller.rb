@@ -19,7 +19,6 @@ class Api::ContactsController < ApplicationController
 
   def create
     contact = Contact.new contact_params
-
     contact[:user_id] = @current_user.id
     if contact.valid?
       contact.save

@@ -18,6 +18,7 @@ RSpec.describe "Api::Contacts Endpoints", type: :request do
             res = JSON.parse(response.body)
             expect(response).to have_http_status(:success)
             expect(Contact.count).to eql 10
+            byebug
           end
         end
       end
@@ -43,8 +44,45 @@ RSpec.describe "Api::Contacts Endpoints", type: :request do
         end
       end
     end
+
+    describe "create" do
+      describe "POST /create" do
+        context "with valid params and already authorized" do
+          let(:valid_params)  {
+            {
+              name: "Joo Inn",
+              phone: "+72373902738",
+              description: "No place like home"
+            }
+          }
+          it "creates an instance of Contact" do
+            expect { post "/api/contacts", params: valid_params, headers: headers}.to change { Contact.count }.by(1)
+            expect(response).to have_http_status(:created)
+            res = JSON.parse(response.body)
+            expect(res["name"]).to eq("Joo Inn")
+            expect(res["user_id"]).to eq(user.id)
+          end
+        end
+
+        context "with invalid params" do
+          let(:invalid_params)  {
+            {
+              name: "Jddx",
+              phone: "+72373xzm",
+              description: ""
+            }
+          }
+          it "creates an instance of Contact" do
+            expect { post "/api/contacts", params: invalid_params, headers: headers}.to change { Contact.count }.by(0)
+            expect(response).to have_http_status(:bad_request)
+          end
+        end
+      end
+    end
   end
 end
+
+
 =begin
   describe "GET /update" do
     it "returns http success" do
