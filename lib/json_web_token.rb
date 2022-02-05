@@ -6,11 +6,10 @@ module JsonWebToken
 		end
 
 		def decode(token)
-			begin
-				body = JWT.decode(token.split(" ")[1], Rails.application.secrets.secret_key_base).first
+			body = JWT.decode(token.split(" ")[1], Rails.application.secrets.secret_key_base, false).first
+			HashWithIndifferentAccess.new body
 			rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
         nil
       end
 		end
 	end
-end
