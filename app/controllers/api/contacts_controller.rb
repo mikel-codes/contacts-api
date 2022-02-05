@@ -17,10 +17,16 @@ class Api::ContactsController < ApplicationController
   def destroy
   end
 
-  def new
-  end
-
   def create
+    contact = Contact.new contact_params
+
+    contact[:user_id] = @current_user.id
+    if contact.valid?
+      contact.save
+      render json: contact, status: :created
+    else
+      render json: contact.errors, status: :bad_request
+    end
   end
 
   private
@@ -34,7 +40,8 @@ class Api::ContactsController < ApplicationController
   end
 
   def contact_params
-    params.permit(:owner, :name, :phone, :description)
+    #these params works at the db_level so :user_id used instead of owner
+    params.permit(:user_id, :name, :phone, :description)
   end
 
 end
