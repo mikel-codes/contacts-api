@@ -17,6 +17,8 @@ class ApplicationController < ActionController::API
         #forbid the request if nil
         head :unauthorized
       end
+    else
+      head :unauthorized
     end
   end
 
