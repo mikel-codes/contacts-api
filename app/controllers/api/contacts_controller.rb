@@ -12,6 +12,11 @@ class Api::ContactsController < ApplicationController
   end
 
   def update
+    if @contact.update! contact_params
+      render json: @contact, status: :ok
+    else
+      render json: @contact.errors, status: :bad_request
+    end
   end
 
   def destroy

@@ -18,7 +18,6 @@ RSpec.describe "Api::Contacts Endpoints", type: :request do
             res = JSON.parse(response.body)
             expect(response).to have_http_status(:success)
             expect(Contact.count).to eql 10
-            byebug
           end
         end
       end
@@ -79,17 +78,22 @@ RSpec.describe "Api::Contacts Endpoints", type: :request do
         end
       end
     end
+
+    describe "PATCH /update" do
+      context "changes the name field of the contact" do
+        it "returns " do
+          patch "/api/contacts/#{Contact.last.id}" , params: {name: "logo Fame", phone: Contact.last.phone }, headers: headers
+          expect(response).to have_http_status 200
+          res = JSON.parse(response.body)
+          expect(res["name"]).to eql "logo Fame"
+        end
+      end
+    end
   end
 end
 
 
 =begin
-  describe "GET /update" do
-    it "returns http success" do
-      get "/api/contacts/update"
-      expect(response).to have_http_status(:success)
-    end
-  end
 
   describe "GET /destroy" do
     it "returns http success" do
@@ -98,17 +102,5 @@ end
     end
   end
 
-  describe "GET /new" do
-    it "returns http success" do
-      get "/api/contacts/new"
-      expect(response).to have_http_status(:success)
-    end
-  end
 
-  describe "GET /create:post" do
-    it "returns http success" do
-      get "/api/contacts/create:post"
-      expect(response).to have_http_status(:success)
-    end
-  end
 =end
