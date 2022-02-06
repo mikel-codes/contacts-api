@@ -12,7 +12,7 @@ class Api::RatingsController < ApplicationController
   end
 
   def update
-    if @rating.update_attribute :value, params[:value]
+    if @rating.update_attribute(:value, params[:value])
       render json: @rating, status: :ok
     else
       # code
@@ -22,11 +22,11 @@ class Api::RatingsController < ApplicationController
 
   private
   def set_contact
-    @contact = Contact.find(params[:contact_id])
+    @contact = Contact.find_by(id: params[:contact_id])
   end
 
   def set_rating
-    @rating = Rating.find(params[:id])
+    @rating = Rating.find_by(id: params[:id])
   end
 
   def rating_params
