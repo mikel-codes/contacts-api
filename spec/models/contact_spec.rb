@@ -31,4 +31,3 @@ RSpec.describe Contact, type: :model do
     end
   end
 end
-  #it { should validate_uniqueness_of(:phone) }
