@@ -22,11 +22,11 @@ class Api::RatingsController < ApplicationController
 
   private
   def set_contact
-    @contact = Contact.find_by(id: params[:contact_id])
+    @contact = Contact.find(params[:contact_id])
   end
 
   def set_rating
-    @rating = Rating.find_by(id: params[:id])
+    @rating = Rating.find(params[:id])
   end
 
   def rating_params
