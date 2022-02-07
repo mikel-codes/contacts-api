@@ -1,4 +1,3 @@
-require 'byebug'
 class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
   before_action :authorize_user
