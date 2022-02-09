@@ -17,10 +17,12 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  username: topman
-  password: top1343
-  host: localhost
+  username: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: <%= ENV['DATABASE_HOST'] %>
   timeout: 5000
+  port: 5432
+
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
@@ -28,6 +30,7 @@ default: &default
 development:
   <<: *default
   database: contacts_api_development
+
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -63,6 +66,8 @@ test:
   <<: *default
   database: contacts_api_test
 
+
+
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
@@ -86,5 +91,5 @@ test:
 production:
   <<: *default
   database: contacts_api_production
-  username: contacts_api
-  password: <%= ENV['CONTACTS_API_DATABASE_PASSWORD'] %>
+  #username: contacts_api
+  #password: <%= ENV['CONTACTS_API_DATABASE_PASSWORD'] %>
