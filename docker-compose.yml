@@ -1,0 +1,50 @@
+# Each thing that Docker Compose runs is referred to as
+# a "service". web service contains rails app; db service contains postgres server
+version: "3.8"
+services:
+  db: #create a container for postgres when run
+    image: postgres
+    hostname: db
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    labels:
+      description: "Postgresql database"
+      service: "postgresql"
+
+
+  web:
+    # the location of the root dir, from which we start building
+    build: .
+    hostname: web
+
+    #The command to be run with docker-compose up
+    command: ./run_web.sh
+
+    # This makes it so any code changes inside the project
+    # directory get synced with Docker. Without this line,
+    # we'd have to restart the container every time we
+    # changed a file.
+
+    volumes:
+      - .:/contacts-api:cached
+      - gem_cache:/usr/local/bundle/gems
+    ports:
+      - "3000:3000"
+    environment:
+        DATABASE_NAME: bossman
+        DATABASE_USER: topman
+        DATABASE_PASSWORD: top1343
+        DATABASE_HOST: db
+    links:
+      - db
+    depends_on:
+      - db
+
+volumes:
+  gem_cache:
+  postgres_data:
